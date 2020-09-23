@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 import { AppProvider } from './components/ContextPage/context';
 
-import ContextPage from './components/ContextPage';
+// import ContextPage from './components/ContextPage';
 import ComponentPage from './components/ComponentPage';
 import Products from './components/ContextPage/_components/Products';
 import './App.css';

@@ -17,34 +17,50 @@ interface IBaseButtonProps {
   className?: string;
   disabled?: boolean;
   size?: ButtonSize;
-  type?: ButtonType;
+  btnType?: ButtonType;
   href?: string;
   children: React.ReactNode;
 }
 
-const Button: React.FC<IBaseButtonProps> = (props) => {
+/**
+ * 按钮类按钮属性
+ */
+type NativeButtonProps = IBaseButtonProps & React.ButtonHTMLAttributes<HTMLElement>;
+
+/**
+ * 链接类按钮熟悉
+ */
+type AnchorButtonProps = IBaseButtonProps & React.AnchorHTMLAttributes<HTMLElement>;
+
+/**
+ * Button 组件熟悉
+ */
+export type IButtonProps = Partial<NativeButtonProps & AnchorButtonProps>
+
+const Button: React.FC<IButtonProps> = (props) => {
   const {
     className,
     disabled,
     size,
-    type,
+    btnType,
     href,
     children,
+    ...resetProps
   } = props;
 
   // btn
   // button size: btn-lg, btn-sm
-  // button type: btn-primary, btn-danger,
+  // button btnType: btn-primary, btn-danger,
   // button status: btn-disabled
-  const classes = classnames('btn', {
-    [`btn-${type}`]: type,
+  const classes = classnames('btn', className, {
+    [`btn-${btnType}`]: btnType,
     [`btn-${size}`]: size,
-    'btn-disabled': (type === ButtonType.Link) && disabled,
-  }, className);
+    'btn-disabled': (btnType === ButtonType.Link) && disabled,
+  });
 
-  if(type === ButtonType.Link && href) {
+  if(btnType === ButtonType.Link && href) {
     return (
-      <a className={classes} href={href}>{children}</a>
+      <a className={classes} {...resetProps}>{children}</a>
     )
   }
 
@@ -52,6 +68,7 @@ const Button: React.FC<IBaseButtonProps> = (props) => {
     <button
       className={classes}
       disabled={disabled}
+      {...resetProps}
     >
       {children}
     </button>
@@ -60,7 +77,7 @@ const Button: React.FC<IBaseButtonProps> = (props) => {
 
 Button.defaultProps = {
   disabled: false,
-  type: ButtonType.Default,
+  btnType: ButtonType.Default,
 }
 
 export default Button;
